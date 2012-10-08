@@ -8,9 +8,10 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
-  has_many :accounts
+  has_many :accounts, :dependent => :destroy
 
   before_create :create_account
+  
 
     private
     def create_account

@@ -47,7 +47,7 @@ class AccountsController < ApplicationController
 
     respond_to do |format|
       if @account.save
-        format.html { redirect_to @account, notice: 'Account was successfully created.' }
+        format.html { redirect_to @account, notice: "Account was successfully created.#{undo_link}" }
         format.json { render json: @account, status: :created, location: @account }
       else
         format.html { render action: "new" }
@@ -63,7 +63,7 @@ class AccountsController < ApplicationController
 
     respond_to do |format|
       if @account.update_attributes(params[:account])
-        format.html { redirect_to @account, notice: 'Account was successfully updated.' }
+        format.html { redirect_to @account, notice: "Account was successfully updated. #{undo_link}" }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -79,8 +79,12 @@ class AccountsController < ApplicationController
     @account.destroy
 
     respond_to do |format|
-      format.html { redirect_to accounts_url }
+      format.html { redirect_to accounts_url, notice: "Account was successfully destroyed. #{undo_link}" }
       format.json { head :no_content }
     end
+  end
+  private
+  def undo_link
+    view_context.link_to("undo", revert_version_path(@account.versions.scoped.last), :method => :post)
   end
 end
