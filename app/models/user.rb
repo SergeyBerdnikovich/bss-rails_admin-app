@@ -6,14 +6,14 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :role_id, :name
   # attr_accessible :title, :body
   has_many :accounts, :dependent => :destroy
-
+  belongs_to :role
   before_create :create_account
-  
 
-    private
+  validates :email, :presence => true
+  private
     def create_account
       self.accounts << Account.new(name: "blablabla")  
     end

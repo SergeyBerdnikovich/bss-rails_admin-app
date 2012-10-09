@@ -17,6 +17,7 @@ RailsAdmin.config do |config|
   # If you want to track changes on your models:
    config.audit_with :history, 'User'
    config.audit_with :history, 'Account'
+   config.audit_with :history, 'Role'
 
   # Or with a PaperTrail: (you need to install it first)
   # config.audit_with :paper_trail, 'User'
@@ -61,8 +62,10 @@ RailsAdmin.config do |config|
   
   #   # Found associations:
 
-       configure :user, :belongs_to_association 
-
+       configure :user do
+        :belongs_to_association 
+       # partial "form_user"
+      end
   #   # Found columns:
 
   #     configure :id, :integer 
@@ -96,7 +99,9 @@ RailsAdmin.config do |config|
   #     # you can override a cross-section field configuration in any section with the same syntax `configure :field_name do ... end`
   #     # using `field` instead of `configure` will exclude all other fields and force the ordering
    end
-
+ config.model 'Role' do
+   configure :users, :has_many_association 
+ end
 
   ###  User  ###
 
@@ -105,8 +110,15 @@ RailsAdmin.config do |config|
   #   # You can copy this to a 'rails_admin do ... end' block inside your user.rb model definition
   
   #   # Found associations:
-
-       configure :accounts, :has_many_association 
+       configure :role do 
+        :belongs_to_association
+         # partial "form_role"
+       end
+       configure :accounts do
+        :has_many_association 
+               
+       #partial "form_list_accounts"
+        end
 
   #   # Found columns:
 
@@ -125,6 +137,7 @@ RailsAdmin.config do |config|
   #     configure :created_at, :datetime 
   #     configure :updated_at, :datetime 
 
+
   #   # Cross-section configuration:
   
   #     # object_label_method :name     # Name of the method called for pretty printing an *instance* of ModelName
@@ -137,11 +150,15 @@ RailsAdmin.config do |config|
   #   # Section specific configuration:
   
        list do
-          filters [:id]  # Array of field names which filters should be shown by default in the table header
+       # partial "form_list_accounts"
+     #   field :accounts do
+     #    :name(:login)
+     # end
+  #        filters [:id]  # Array of field names which filters should be shown by default in the table header
   #       # items_per_page 100    # Override default_items_per_page
   #       # sort_by :id           # Sort column (default is primary key)
   #       # sort_reverse true     # Sort direction (default is true for primary key, last created first)
-       end
+        end
   #     show do; end
   #     edit do; end
   #     export do; end
