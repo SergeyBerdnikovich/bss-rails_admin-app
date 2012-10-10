@@ -1,4 +1,4 @@
-# RailsAdmin config file. Generated on October 10, 2012 15:01
+# RailsAdmin config file. Generated on October 08, 2012 12:34
 # See github.com/sferik/rails_admin for more informations
 
 RailsAdmin.config do |config|
@@ -15,7 +15,6 @@ RailsAdmin.config do |config|
   config.current_user_method { current_user } # auto-generated
 
   # If you want to track changes on your models:
-  # config.audit_with :history, 'User'
    config.audit_with :history, 'User'
    config.audit_with :history, 'Account'
    config.audit_with :history, 'Role'
@@ -30,10 +29,10 @@ RailsAdmin.config do |config|
    config.default_items_per_page = 10
 
   # Exclude specific models (keep the others):
-  # config.excluded_models = ['Account', 'Role', 'User']
+  # config.excluded_models = ['Account', 'User']
 
   # Include specific models (exclude the others):
-  # config.included_models = ['Account', 'Role', 'User']
+  # config.included_models = ['Account', 'User']
 
   # Label methods for model instances:
   # config.label_methods << :description # Default is [:name, :title]
@@ -58,21 +57,19 @@ RailsAdmin.config do |config|
   ###  Account  ###
 
    config.model 'Account' do
-       configure :user do
-        :belongs_to_association 
-       # partial "form_user"
-      end
+    #parent User
   #   # You can copy this to a 'rails_admin do ... end' block inside your account.rb model definition
   
   #   # Found associations:
 
-  #     configure :user, :belongs_to_association 
-  #     configure :versions, :has_many_association         # Hidden 
-
+       configure :user do
+        :belongs_to_association 
+       # partial "form_user"
+      end
   #   # Found columns:
 
   #     configure :id, :integer 
-  #     configure :login, :string 
+  #     configure :name, :string 
   #     configure :user_id, :integer         # Hidden 
   #     configure :private_mail, :string 
   #     configure :created_at, :datetime 
@@ -102,54 +99,19 @@ RailsAdmin.config do |config|
   #     # you can override a cross-section field configuration in any section with the same syntax `configure :field_name do ... end`
   #     # using `field` instead of `configure` will exclude all other fields and force the ordering
    end
-
-
-  ###  Role  ###
-
-   config.model 'Role' do
-configure :users, :has_many_association 
-  #   # You can copy this to a 'rails_admin do ... end' block inside your role.rb model definition
-  
-  #   # Found associations:
-
-  #     configure :users, :has_many_association 
-
-  #   # Found columns:
-
-  #     configure :id, :integer 
-  #     configure :created_at, :datetime 
-  #     configure :updated_at, :datetime 
-  #     configure :name, :string 
-
-  #   # Cross-section configuration:
-  
-  #     # object_label_method :name     # Name of the method called for pretty printing an *instance* of ModelName
-  #     # label 'My model'              # Name of ModelName (smartly defaults to ActiveRecord's I18n API)
-  #     # label_plural 'My models'      # Same, plural
-  #     # weight 0                      # Navigation priority. Bigger is higher.
-  #     # parent OtherModel             # Set parent model for navigation. MyModel will be nested below. OtherModel will be on first position of the dropdown
-  #     # navigation_label              # Sets dropdown entry's name in navigation. Only for parents!
-  
-  #   # Section specific configuration:
-  
-  #     list do
-  #       # filters [:id, :name]  # Array of field names which filters should be shown by default in the table header
-  #       # items_per_page 100    # Override default_items_per_page
-  #       # sort_by :id           # Sort column (default is primary key)
-  #       # sort_reverse true     # Sort direction (default is true for primary key, last created first)
-  #     end
-  #     show do; end
-  #     edit do; end
-  #     export do; end
-  #     # also see the create, update, modal and nested sections, which override edit in specific cases (resp. when creating, updating, modifying from another model in a popup modal or modifying from another model nested form)
-  #     # you can override a cross-section field configuration in any section with the same syntax `configure :field_name do ... end`
-  #     # using `field` instead of `configure` will exclude all other fields and force the ordering
-   end
-
+ config.model 'Role' do
+   configure :users, :has_many_association 
+#   parent User
+ end
 
   ###  User  ###
 
    config.model 'User' do
+   
+
+  #   # You can copy this to a 'rails_admin do ... end' block inside your user.rb model definition
+  
+  #   # Found associations:
        configure :role do 
         :belongs_to_association
          # partial "form_role"
@@ -159,16 +121,10 @@ configure :users, :has_many_association
                
        #partial "form_list_accounts"
         end
-  #   # You can copy this to a 'rails_admin do ... end' block inside your user.rb model definition
-  
-  #   # Found associations:
-
-  #     configure :role, :belongs_to_association 
-  #     configure :accounts, :has_many_association 
 
   #   # Found columns:
 
-  #     configure :id, :integer 
+    #   configure :name, :integer 
   #     configure :email, :string 
   #     configure :password, :password         # Hidden 
   #     configure :password_confirmation, :password         # Hidden 
@@ -182,8 +138,7 @@ configure :users, :has_many_association
   #     configure :last_sign_in_ip, :string 
   #     configure :created_at, :datetime 
   #     configure :updated_at, :datetime 
-  #     configure :role_id, :integer         # Hidden 
-  #     configure :name, :string 
+
 
   #   # Cross-section configuration:
   
@@ -197,11 +152,15 @@ configure :users, :has_many_association
   #   # Section specific configuration:
   
   #     list do
-  #       # filters [:id, :name]  # Array of field names which filters should be shown by default in the table header
+       # partial "form_list_accounts"
+     #   field :accounts do
+     #    :name(:login)
+     # end
+  #        filters [:id]  # Array of field names which filters should be shown by default in the table header
   #       # items_per_page 100    # Override default_items_per_page
   #       # sort_by :id           # Sort column (default is primary key)
   #       # sort_reverse true     # Sort direction (default is true for primary key, last created first)
-  #     end
+ #       end
   #     show do; end
   #     edit do; end
   #     export do; end
